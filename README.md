@@ -94,7 +94,7 @@ ok distill create "Your distilled content" "citation1,citation2" --tags "insight
 
 For AI agents and automated workflows, see [examples/agents.md](examples/agents.md) for detailed integration patterns and examples.
 
-For the technical design specification, see [rfcs/0000-openkl-design.md](rfcs/0000-openkl-design.md).
+For the design spec, see [rfcs/0000-openkl-design.md](rfcs/0000-openkl-design.md).
 
 ### Examples
 
@@ -131,4 +131,4 @@ Apache License 2.0
 - [SemTools](https://github.com/run-llama/semtools)
 - [Agent Client Protocol](https://agentclientprotocol.com/)
 - [Fusion GraphRAG Blog Post](https://siwei.io/fusion-graphrag-2025/)
-- [Nowledge Mem](https://mem.nowledge.co/)
+- [Nowledge Mem](https://nowled.ge/mem)

@@ -427,3 +427,4 @@ ok store ingest "spreadsheet.xlsx" --format xlsx
 - Export commands
 - MCP prompts and tools based Protocol
 - Memory consolidation/forgetting (later)
+- Integrate with Apache OpenDAL for Cloud Agent support
