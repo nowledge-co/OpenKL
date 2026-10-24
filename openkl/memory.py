@@ -34,6 +34,7 @@ class MemoryManager:
 
     def add(self, text: str, tags: list[str] = None, topics: list[str] = None) -> str:
         """Add a new memory note."""
+        conn = get_connection()
         if tags is None:
             tags = []
         if topics is None:
@@ -69,7 +70,6 @@ class MemoryManager:
 
         # Store in database (clean text for storage)
         clean_text = text.replace("\n", " ").replace("\r", " ")
-        conn = get_connection()
         conn.execute(
             "CREATE (m:MemoryNote {id: $id, text: $text, ts: $ts, tags: $tags, vec: $vec})",
             {
@@ -104,6 +104,7 @@ class MemoryManager:
         from .citations import CitationManager
         from .vector_search import search_memory_vectors
 
+        get_connection()
         # Get query embedding
         query_embedding = get_embedding(query)
 

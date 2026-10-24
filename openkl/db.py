@@ -33,43 +33,68 @@ SCHEMA = [
 
 # Global connection
 _connection: graphdb.Connection | None = None
+_database: graphdb.Database | None = None
+
+
+class MigrationRequiredError(RuntimeError):
+    """The legacy graph must remain authoritative until explicitly migrated."""
+
+
+def check_legacy_database(db_path: Path | None = None) -> None:
+    """Reject legacy/default graph access before creating or changing any data."""
+    target = (DB_PATH if db_path is None else db_path).resolve()
+    if LEGACY_KUZU_DB_PATH.exists() and target in {
+        DB_PATH.resolve(),
+        LEGACY_KUZU_DB_PATH.resolve(),
+    }:
+        raise MigrationRequiredError(
+            f"Migration required: legacy Kuzu database found at {LEGACY_KUZU_DB_PATH}. "
+            f"OpenKL cannot automatically migrate it to {DB_PATH}; graph access is "
+            "blocked to avoid returning an empty or incomplete index. Keep the entire "
+            "~/.ok directory and continue using your pre-upgrade OpenKL environment "
+            "(Kuzu backend, revision a4ce8a0730e354d562347843df7dded2de40ae59). "
+            "Do not delete or rename the legacy database to bypass this check. "
+            "See README: LadybugDB Migration."
+        )
 
 
 def init_db(db_path: Path | None = None) -> graphdb.Connection:
     """Initialize the LadybugDB database with schema."""
-    global _connection
+    global _connection, _database
 
+    check_legacy_database(db_path)
     if db_path is None:
         db_path = DB_PATH
-        if LEGACY_KUZU_DB_PATH.exists() and not DB_PATH.exists():
-            logger.warning(
-                "Found legacy Kuzu database at %s. OpenKL now uses LadybugDB at %s. "
-                "Rebuild or migrate the derived graph before relying on old graph data.",
-                LEGACY_KUZU_DB_PATH,
-                DB_PATH,
-            )
 
     # Ensure directory exists
     db_path.parent.mkdir(parents=True, exist_ok=True)
 
     # Create database and connection
+    close_connection()
     db = graphdb.Database(str(db_path))
     conn = graphdb.Connection(db)
 
-    # Install and load vector extension
     try:
-        conn.execute("INSTALL VECTOR;")
-        conn.execute("LOAD VECTOR;")
-        logger.info("Vector extension installed and loaded")
-    except Exception as e:
-        logger.error("Failed to install vector extension: %s", e)
-        raise RuntimeError("Vector extension is required for OpenKL") from e
+        # Load a cached extension before attempting a network install.
+        try:
+            conn.execute("LOAD VECTOR;")
+        except Exception:
+            try:
+                conn.execute("INSTALL VECTOR;")
+                conn.execute("LOAD VECTOR;")
+            except Exception as e:
+                raise RuntimeError("Vector extension is required for OpenKL") from e
+        logger.info("Vector extension loaded")
 
-    # Create schema
-    for stmt in SCHEMA:
-        conn.execute(stmt)
-        logger.debug(f"Executed schema statement: {stmt[:50]}...")
+        for stmt in SCHEMA:
+            conn.execute(stmt)
+            logger.debug(f"Executed schema statement: {stmt[:50]}...")
+    except Exception:
+        conn.close()
+        db.close()
+        raise
 
+    _database = db
     _connection = conn
     logger.info(f"Database initialized at {db_path}")
     return conn
@@ -87,8 +112,11 @@ def get_connection() -> graphdb.Connection:
 
 def close_connection() -> None:
     """Close the database connection."""
-    global _connection
+    global _connection, _database
     if _connection is not None:
         _connection.close()
         _connection = None
         logger.info("Database connection closed")
+    if _database is not None:
+        _database.close()
+        _database = None

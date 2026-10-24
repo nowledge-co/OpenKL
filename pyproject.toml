@@ -82,6 +82,7 @@ disallow_untyped_defs = true
 
 [dependency-groups]
 dev = [
+    "kuzu==0.11.2", # Legacy upgrade fixtures run in a separate process.
     "mypy>=1.0",
     "pre-commit>=4.3.0",
     "pytest>=7.0",

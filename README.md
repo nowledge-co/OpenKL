@@ -123,7 +123,25 @@ OpenKL uses a file-based approach with an embedded LadybugDB graph database:
 
 ### LadybugDB Migration
 
-OpenKL now uses LadybugDB instead of the archived KuzuDB package. Existing `~/.ok/kuzu` graph data is treated as a legacy derived index; keep it as a backup and rebuild into `~/.ok/ladybug` before relying on old graph state.
+Fresh installations use LadybugDB at `~/.ok/ladybug`. Existing Kuzu installations
+require an explicit migration that this release does **not** provide. `ok index`
+and `ok sync` are placeholders; normal commands do not rebuild existing content.
+Re-adding memories creates new IDs and does not restore their graph relationships.
+
+If `~/.ok/kuzu` exists, commands stop with `Migration required` and a nonzero exit
+status before opening either graph. This also applies if `~/.ok/ladybug` already
+exists from an earlier attempt. The legacy graph, memory files, document files,
+IDs and relationships are left untouched. Do not delete or rename `~/.ok/kuzu`
+to bypass the check.
+
+To keep working with existing content, use your pre-upgrade OpenKL checkout and
+its existing Kuzu environment. The last Kuzu revision is
+[`a4ce8a0730e354d562347843df7dded2de40ae59`](https://github.com/nowledge-co/OpenKL/commit/a4ce8a0730e354d562347843df7dded2de40ae59).
+If you already updated that checkout, restore its source with
+`git switch --detach a4ce8a0730e354d562347843df7dded2de40ae59`, then run
+`uv sync --locked` and `uv run ok mem list` there. Preserve a backup of the entire
+`~/.ok` directory and the original Kuzu environment before changing versions;
+this release does not claim binary compatibility between database engines.
 
 ## License
 
