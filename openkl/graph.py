@@ -1,8 +1,8 @@
 """
-Graph operations using Kùzu DB for OpenKL.
+Graph operations using LadybugDB for OpenKL.
 """
 
-from typing import Any
+from typing import Any, cast
 
 from rich.console import Console
 from rich.json import JSON
@@ -16,11 +16,11 @@ console = Console()
 class GraphManager:
     """Manages graph operations and Cypher queries."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         pass
 
     def run_cypher(
-        self, query: str, params: dict[str, Any] = None
+        self, query: str, params: dict[str, Any] | None = None
     ) -> list[dict[str, Any]]:
         """Execute a Cypher query and return results."""
         if params is None:
@@ -60,16 +60,18 @@ class GraphManager:
         # Count nodes
         result = conn.execute("MATCH (n) RETURN labels(n) as label, count(n) as count")
         for row in result:
-            label = row[0][0] if row[0] else "Unknown"
-            stats[f"{label}_count"] = row[1]
+            row_values = cast(list[Any], row)
+            label = row_values[0][0] if row_values[0] else "Unknown"
+            stats[f"{label}_count"] = row_values[1]
 
-        # Count relationships - Kùzu doesn't have type() function, so we'll count by relationship name
+        # Count relationships by name because the backend does not expose type().
         rel_types = ["HAS_CHUNK", "Mentions", "MemMentions", "DerivedFrom", "HasTopic"]
         for rel_type in rel_types:
             result = conn.execute(
                 f"MATCH ()-[r:{rel_type}]->() RETURN count(r) as count"
             )
-            count = list(result)[0][0] if result else 0
+            rows = cast(list[list[Any]], list(result))
+            count = rows[0][0] if rows else 0
             stats[f"{rel_type}_count"] = count
 
         return stats
@@ -94,7 +96,9 @@ class GraphManager:
 
         return self.run_cypher(query, {"id": memory_id})
 
-    def print_results(self, results: list[dict[str, Any]], json_output: bool = False):
+    def print_results(
+        self, results: list[dict[str, Any]], json_output: bool = False
+    ) -> None:
         """Print query results."""
         if not results:
             console.print("[yellow]No results found[/yellow]")
@@ -108,7 +112,7 @@ class GraphManager:
 
             if results:
                 # Process first result to determine columns
-                first_result = self._process_kuzu_result(results[0])
+                first_result = self._process_graph_result(results[0])
                 columns = [
                     col
                     for col in first_result.keys()
@@ -120,7 +124,7 @@ class GraphManager:
 
                 # Add rows
                 for result in results:
-                    processed_result = self._process_kuzu_result(result)
+                    processed_result = self._process_graph_result(result)
                     row_values = []
                     for col in columns:
                         value = processed_result.get(col, "")
@@ -132,10 +136,10 @@ class GraphManager:
 
             console.print(table)
 
-    def _process_kuzu_result(self, result) -> dict[str, Any]:
-        """Process a Kùzu result object and filter out vector fields."""
+    def _process_graph_result(self, result: Any) -> dict[str, Any]:
+        """Process a graph result object and filter out vector fields."""
         if hasattr(result, "__dict__"):
-            # Handle Kùzu object - if it's a single column with an object, expand it
+            # If it's a single column with an object, expand it.
             result_dict = {
                 k: v for k, v in result.__dict__.items() if not k.startswith("_")
             }
@@ -160,9 +164,9 @@ class GraphManager:
             if k.endswith("vec") or k == "vec":
                 continue
 
-            # If the value is a Kùzu object, recursively process it
+            # If the value is a graph object, recursively process it.
             if hasattr(v, "__dict__"):
-                v = self._process_kuzu_result(v)
+                v = self._process_graph_result(v)
             # If the value is a list (like a vector), skip it
             elif isinstance(v, list) and len(v) > 10:  # Likely a vector
                 continue
@@ -172,7 +176,7 @@ class GraphManager:
         return filtered_result
 
     def _clean_string_representation(self, obj_str: str) -> str:
-        """Clean string representation of Kùzu objects to remove vectors."""
+        """Clean string representation of graph objects to remove vectors."""
         import re
 
         # Remove vector fields from string representation - more aggressive approach

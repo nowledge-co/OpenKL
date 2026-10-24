@@ -34,6 +34,7 @@ class MemoryManager:
 
     def add(self, text: str, tags: list[str] = None, topics: list[str] = None) -> str:
         """Add a new memory note."""
+        conn = get_connection()
         if tags is None:
             tags = []
         if topics is None:
@@ -69,7 +70,6 @@ class MemoryManager:
 
         # Store in database (clean text for storage)
         clean_text = text.replace("\n", " ").replace("\r", " ")
-        conn = get_connection()
         conn.execute(
             "CREATE (m:MemoryNote {id: $id, text: $text, ts: $ts, tags: $tags, vec: $vec})",
             {
@@ -104,6 +104,7 @@ class MemoryManager:
         from .citations import CitationManager
         from .vector_search import search_memory_vectors
 
+        get_connection()
         # Get query embedding
         query_embedding = get_embedding(query)
 
@@ -176,23 +177,25 @@ class MemoryManager:
         conn = get_connection()
 
         # Check if memory exists
-        result = conn.execute(f"MATCH (m:MemoryNote {{id: '{memory_id}'}}) RETURN m")
+        result = conn.execute(
+            "MATCH (m:MemoryNote {id: $id}) RETURN m", {"id": memory_id}
+        )
         if not list(result):
             return False
 
         # Build update query
         updates = []
+        params: dict[str, Any] = {"id": memory_id}
         if text is not None:
-            updates.append(f"m.text = '{text.replace("'", "\\'")}'")
+            updates.append("m.text = $text")
+            params["text"] = text
         if tags is not None:
-            tags_str = "[" + ", ".join([f"'{tag}'" for tag in tags]) + "]"
-            updates.append(f"m.tags = {tags_str}")
+            updates.append("m.tags = $tags")
+            params["tags"] = tags
 
         if updates:
-            update_query = (
-                f"MATCH (m:MemoryNote {{id: '{memory_id}'}}) SET {', '.join(updates)}"
-            )
-            conn.execute(update_query)
+            update_query = f"MATCH (m:MemoryNote {{id: $id}}) SET {', '.join(updates)}"
+            conn.execute(update_query, params)
 
         # Update topics if provided
         if topics is not None:

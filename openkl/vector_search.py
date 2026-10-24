@@ -1,13 +1,51 @@
 """
-Vector search utilities leveraging Kùzu's native vector index capabilities.
+Vector search utilities leveraging LadybugDB's native vector index capabilities.
 """
 
-from typing import Any
+import math
+from typing import Any, cast
 
 from .db import get_connection
 
+MAX_VECTOR_SEARCH_K = 1000
 
-def _ensure_vector_extension_loaded(conn, verbose: bool = False):
+
+def _normalize_query_vector(query_vector: Any) -> list[float]:
+    """Convert a vector-like value into a finite numeric list."""
+    if hasattr(query_vector, "tolist"):
+        query_vector = query_vector.tolist()
+
+    if not isinstance(query_vector, (list, tuple)):
+        raise TypeError("query_vector must be a list or tuple of numbers")
+
+    try:
+        normalized = [float(value) for value in query_vector]
+    except (TypeError, ValueError) as exc:
+        raise ValueError("query_vector must contain only numeric values") from exc
+
+    if not normalized:
+        raise ValueError("query_vector must not be empty")
+    if not all(math.isfinite(value) for value in normalized):
+        raise ValueError("query_vector must contain only finite numeric values")
+
+    return normalized
+
+
+def _normalize_k(k: int) -> int:
+    """Validate vector-search result count before query interpolation."""
+    if not isinstance(k, int) or isinstance(k, bool):
+        raise TypeError("k must be an integer")
+    if not 1 <= k <= MAX_VECTOR_SEARCH_K:
+        raise ValueError(f"k must be between 1 and {MAX_VECTOR_SEARCH_K}")
+    return k
+
+
+def _serialize_vector(values: list[float]) -> str:
+    """Serialize a validated numeric vector for LadybugDB vector procedures."""
+    return "[" + ", ".join(f"{value:.17g}" for value in values) + "]"
+
+
+def _ensure_vector_extension_loaded(conn: Any, verbose: bool = False) -> None:
     """Ensure the vector extension is loaded."""
     try:
         # Try to load the vector extension
@@ -25,7 +63,7 @@ def _ensure_vector_extension_loaded(conn, verbose: bool = False):
                 raise RuntimeError(f"Failed to load vector extension: {e2}") from e2
 
 
-def create_vector_indexes(verbose: bool = False):
+def create_vector_indexes(verbose: bool = False) -> None:
     """Create vector indexes for memory notes and chunks."""
     conn = get_connection()
 
@@ -89,7 +127,7 @@ def create_vector_indexes(verbose: bool = False):
             raise
 
 
-def _ensure_vector_indexes_exist(conn, verbose: bool = False):
+def _ensure_vector_indexes_exist(conn: Any, verbose: bool = False) -> None:
     """Ensure vector indexes exist, create them if they don't."""
     try:
         # Check if memory index exists
@@ -142,9 +180,12 @@ def _ensure_vector_indexes_exist(conn, verbose: bool = False):
 
 
 def search_memory_vectors(
-    query_vector: list[float], k: int = 5, verbose: bool = False
+    query_vector: Any, k: int = 5, verbose: bool = False
 ) -> list[dict[str, Any]]:
-    """Search memory notes using Kùzu's native vector index."""
+    """Search memory notes using LadybugDB's native vector index."""
+    query_vector = _normalize_query_vector(query_vector)
+    k = _normalize_k(k)
+
     conn = get_connection()
 
     # Ensure vector extension is loaded
@@ -153,12 +194,8 @@ def search_memory_vectors(
     # Ensure vector indexes exist
     _ensure_vector_indexes_exist(conn, verbose)
 
-    # Convert numpy array to list if needed
-    if hasattr(query_vector, "tolist"):
-        query_vector = query_vector.tolist()
-
     # Create query with inline vector values
-    vector_str = str(query_vector)
+    vector_str = _serialize_vector(query_vector)
     query = f"""
         CALL QUERY_VECTOR_INDEX(
             'MemoryNote',
@@ -175,9 +212,9 @@ def search_memory_vectors(
 
     results = []
     for row in result:
-        memory_id, text, ts, tags, distance = row
+        memory_id, text, ts, tags, distance = cast(list[Any], row)
         # Convert distance to similarity (1 - distance for cosine similarity)
-        similarity = 1.0 - distance
+        similarity = 1.0 - float(distance)
         results.append(
             {
                 "id": memory_id,
@@ -193,9 +230,12 @@ def search_memory_vectors(
 
 
 def search_chunk_vectors(
-    query_vector: list[float], k: int = 5, verbose: bool = False
+    query_vector: Any, k: int = 5, verbose: bool = False
 ) -> list[dict[str, Any]]:
-    """Search document chunks using Kùzu's native vector index."""
+    """Search document chunks using LadybugDB's native vector index."""
+    query_vector = _normalize_query_vector(query_vector)
+    k = _normalize_k(k)
+
     conn = get_connection()
 
     # Ensure vector extension is loaded
@@ -204,12 +244,8 @@ def search_chunk_vectors(
     # Ensure vector indexes exist
     _ensure_vector_indexes_exist(conn, verbose)
 
-    # Convert numpy array to list if needed
-    if hasattr(query_vector, "tolist"):
-        query_vector = query_vector.tolist()
-
     # Create query with inline vector values
-    vector_str = str(query_vector)
+    vector_str = _serialize_vector(query_vector)
     query = f"""
         CALL QUERY_VECTOR_INDEX(
             'Chunk',
@@ -228,9 +264,9 @@ def search_chunk_vectors(
 
     results = []
     for row in result:
-        chunk_id, text, path, doc_id, distance = row
+        chunk_id, text, path, doc_id, distance = cast(list[Any], row)
         # Convert distance to similarity (1 - distance for cosine similarity)
-        similarity = 1.0 - distance
+        similarity = 1.0 - float(distance)
         results.append(
             {
                 "id": chunk_id,
@@ -261,16 +297,16 @@ def get_vector_stats() -> dict[str, Any]:
 
     # Count memory notes with vectors
     memory_result = conn.execute("MATCH (m:MemoryNote) RETURN count(m) as count")
-    memory_count = list(memory_result)[0][0]
+    memory_count = cast(list[list[Any]], list(memory_result))[0][0]
 
     # Count chunks with vectors
     chunk_result = conn.execute("MATCH (c:Chunk) RETURN count(c) as count")
-    chunk_count = list(chunk_result)[0][0]
+    chunk_count = cast(list[list[Any]], list(chunk_result))[0][0]
 
     # Get vector dimension
     try:
         vec_result = conn.execute("MATCH (m:MemoryNote) RETURN m.vec LIMIT 1")
-        vec_sample = list(vec_result)[0][0]
+        vec_sample = cast(list[list[Any]], list(vec_result))[0][0]
         vector_dim = len(vec_sample) if vec_sample else 0
     except Exception:
         vector_dim = 0
@@ -301,14 +337,15 @@ def list_vector_indexes() -> list[dict[str, Any]]:
         result = conn.execute("CALL SHOW_INDEXES() RETURN *")
         indexes = []
         for row in result:
+            row_values = cast(list[Any], row)
             indexes.append(
                 {
-                    "table_name": row[0],
-                    "index_name": row[1],
-                    "index_type": row[2],
-                    "property_names": row[3],
-                    "extension_loaded": row[4],
-                    "index_definition": row[5],
+                    "table_name": row_values[0],
+                    "index_name": row_values[1],
+                    "index_type": row_values[2],
+                    "property_names": row_values[3],
+                    "extension_loaded": row_values[4],
+                    "index_definition": row_values[5],
                 }
             )
         return indexes

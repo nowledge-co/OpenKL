@@ -587,6 +587,49 @@ wheels = [
 ]
 
 [[package]]
+name = "ladybug"
+version = "0.17.0"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/78/29/a0e43961b719f80e274dae27b5bf14f82d6061f89b6878e54242c8ecfcee/ladybug-0.17.0.tar.gz", hash = "sha256:6edc8d14d0b17c659bb39af2c5432264c18e87d0a6dc042430553fc4304e790e", size = 10157573, upload-time = "2026-05-28T22:35:50.853Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/aa/f9/ba1634fdbc63ea70f1ce1380e945d88a6888ee04e15c77df360c17085bd1/ladybug-0.17.0-cp310-cp310-macosx_13_0_arm64.whl", hash = "sha256:0a861f447058cc8a1eb020389696f20ebf337fc95d1accc235571a09f6fbe947", size = 4176422, upload-time = "2026-05-28T22:34:51.663Z" },
+    { url = "https://files.pythonhosted.org/packages/63/7e/04b3085d1ce69a245a93308be30c362c05e82e76eeff3a796fdba8dfc3a1/ladybug-0.17.0-cp310-cp310-macosx_13_0_x86_64.whl", hash = "sha256:fefcab39139d00fd28ef3626aadc87e44c981d89b3356cfef92889d85521c8dc", size = 4659486, upload-time = "2026-05-28T22:34:53.36Z" },
+    { url = "https://files.pythonhosted.org/packages/b6/e8/558c351e94eb5ce0e8395e1f24137f69e48161c2896392d5611b1234ac56/ladybug-0.17.0-cp310-cp310-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:a0815e23b4f73dd1c03848659498c25adc50c3f9de695e77418f6be81108ac35", size = 7061307, upload-time = "2026-05-28T22:34:54.976Z" },
+    { url = "https://files.pythonhosted.org/packages/9a/dd/403e5f8609dfc9bf0e2862d5a475adb3187a26f1a390856a21add4f13a10/ladybug-0.17.0-cp310-cp310-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:0fd2ec61564bf5dd48efde85033579b0ada3d0650b1a1d2a389a51997178ee3f", size = 7915305, upload-time = "2026-05-28T22:34:56.722Z" },
+    { url = "https://files.pythonhosted.org/packages/bc/75/fa4b1e752911dba5c23086dc86e6fac340784e9cd2138e1847246586406b/ladybug-0.17.0-cp310-cp310-musllinux_1_2_aarch64.whl", hash = "sha256:a35df06bc0bed039ce93d69b8fe47a8a6c418bc150165a84aede3224c137672c", size = 7888557, upload-time = "2026-05-28T22:34:58.444Z" },
+    { url = "https://files.pythonhosted.org/packages/5d/aa/a726781c45d92cc0ba1ba7a4cd5871c0bbbc993d9bb0e30caf81eae96196/ladybug-0.17.0-cp310-cp310-musllinux_1_2_x86_64.whl", hash = "sha256:353eab63e7ca22316e19b933f276aebbeeb62ec5a56a6eeac0e7109a82c5a461", size = 8773247, upload-time = "2026-05-28T22:35:00.212Z" },
+    { url = "https://files.pythonhosted.org/packages/3f/28/bea65b841dfd7c59c5a69a5100d43048b82626b1a6bd33e8194f0e1962b1/ladybug-0.17.0-cp310-cp310-win_amd64.whl", hash = "sha256:d5f305251e5e37d91e3f95e0f27fedbb3cd688352005c1bf8e4fcc36ce63276c", size = 5280512, upload-time = "2026-05-28T22:35:02.219Z" },
+    { url = "https://files.pythonhosted.org/packages/10/12/c590b3f8d239104416057cb7394d5fcb9f4f530ba206daa9c1c2170bebf4/ladybug-0.17.0-cp311-cp311-macosx_13_0_arm64.whl", hash = "sha256:c91a44d158d1b81fdd1380e38bcb98663277cc15ebf77048144d59575dcdfdd5", size = 4177662, upload-time = "2026-05-28T22:35:03.705Z" },
+    { url = "https://files.pythonhosted.org/packages/d4/65/35242144f1aa650e2c2df9a6ff7a482d12955425c907a25dd24e67681553/ladybug-0.17.0-cp311-cp311-macosx_13_0_x86_64.whl", hash = "sha256:533a53023710d6e8df6531a4001ca7b96f73a38708b491bb96b5919c13042fe8", size = 4661177, upload-time = "2026-05-28T22:35:05.088Z" },
+    { url = "https://files.pythonhosted.org/packages/be/59/a08816408293b62d1a48233000d0db2ce0a6d19e80fd4f2eb58aa57dff32/ladybug-0.17.0-cp311-cp311-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:3708626e54f52688567cf6038ce74af4a3b991ae6b8e2f77abd24cb157c9fc77", size = 7062327, upload-time = "2026-05-28T22:35:06.637Z" },
+    { url = "https://files.pythonhosted.org/packages/99/b6/81687d21dc4c44a3793e9e4a0390bae2e50ef52e4b4ea70bf49d0b687891/ladybug-0.17.0-cp311-cp311-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:3ea17eb5abf86b89c0eebf1fa9c24ef8cb6d2274c30fa9df13e30690e7fd7af6", size = 7915818, upload-time = "2026-05-28T22:35:08.344Z" },
+    { url = "https://files.pythonhosted.org/packages/8f/79/d2dc632bba752eebc304967f054a9f849509510c3427570c75c9b2e04415/ladybug-0.17.0-cp311-cp311-musllinux_1_2_aarch64.whl", hash = "sha256:a9906d02af550feeef83575b08a953411187ddab5f9a2190825affb9dbd74c6a", size = 7890285, upload-time = "2026-05-28T22:35:09.975Z" },
+    { url = "https://files.pythonhosted.org/packages/ed/94/8ad9670bdba2c189cb7d2ef930b69f4341c5d6bb8659c49368aedfdc2cd6/ladybug-0.17.0-cp311-cp311-musllinux_1_2_x86_64.whl", hash = "sha256:7bb5c5608e8e013ed9536c9e49f5e565e5ffe6f93764fe48294b81f4643b202f", size = 8774367, upload-time = "2026-05-28T22:35:11.681Z" },
+    { url = "https://files.pythonhosted.org/packages/ca/9b/727d0bde180ed96a34194d04cbf63672afdada17e4dd90c58dd9e6e57762/ladybug-0.17.0-cp311-cp311-win_amd64.whl", hash = "sha256:738887b33dfdd94aa44a3bed094a4f165ed9ca702db4ef760b56cf947c87c37d", size = 5281537, upload-time = "2026-05-28T22:35:13.581Z" },
+    { url = "https://files.pythonhosted.org/packages/d9/4e/21ccb1c2feafd98081470ae331e145592fd12ed6cde64fc8801ee5bba180/ladybug-0.17.0-cp312-cp312-macosx_13_0_arm64.whl", hash = "sha256:774af1f777e3af8d6199558fec1bbed11a73efe07b2220de53e4c623db8796f8", size = 4178304, upload-time = "2026-05-28T22:35:15.108Z" },
+    { url = "https://files.pythonhosted.org/packages/f6/f7/a1779003b5e2b53006a17f1d5a443e5e9bd854cad0ea63e2070cb652bed3/ladybug-0.17.0-cp312-cp312-macosx_13_0_x86_64.whl", hash = "sha256:74f9d03ab4193fb41847f89fd32c9becdd1983a558dc5d00e23c1368760ea71f", size = 4663758, upload-time = "2026-05-28T22:35:16.624Z" },
+    { url = "https://files.pythonhosted.org/packages/d1/4f/669c633ee3695c2fe589879103ee2639b53a595ff75c9aa284c9aa4ed2da/ladybug-0.17.0-cp312-cp312-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:e7ee790f33a24a82a1179bb7b5a8e10c177f717de9845f1ab0241b58f3311ac4", size = 7058713, upload-time = "2026-05-28T22:35:18.515Z" },
+    { url = "https://files.pythonhosted.org/packages/eb/95/bcd9635e9b5177a8fb2c4de24ea132053eb932bd281f77f8b7e446049b2a/ladybug-0.17.0-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:be16051baddf815ddf608bed476d6cc8b6e8bdb603ca9da1ace7be5c0c3616c0", size = 7913797, upload-time = "2026-05-28T22:35:20.113Z" },
+    { url = "https://files.pythonhosted.org/packages/38/0c/87472def5d2ef5f1a62c69ea4b9709304ce2f6ec0e829777503e323c55c9/ladybug-0.17.0-cp312-cp312-musllinux_1_2_aarch64.whl", hash = "sha256:aa2482403b4231ff828125bd574ff799393afc6b7c699ca31e61f7532396b0ec", size = 7885749, upload-time = "2026-05-28T22:35:21.988Z" },
+    { url = "https://files.pythonhosted.org/packages/15/a6/280bcab11b8b35dc817209db30fc57b335af92e2ff00b3be78fb3f4a23e3/ladybug-0.17.0-cp312-cp312-musllinux_1_2_x86_64.whl", hash = "sha256:60edc7a12c7a7f4cec4371797ee4361839adc9563fc623ec7b4bb258c1888145", size = 8771629, upload-time = "2026-05-28T22:35:23.624Z" },
+    { url = "https://files.pythonhosted.org/packages/f2/8e/28238b764c813fa9a8430cc35609d26ba0b94a09c9c0e8debc0e17a16fcb/ladybug-0.17.0-cp312-cp312-win_amd64.whl", hash = "sha256:9a53ae9dcc8636fda23c78430ac6fb547ea7ab3b6ac90cd78219deb7d9cd05a8", size = 5283482, upload-time = "2026-05-28T22:35:25.555Z" },
+    { url = "https://files.pythonhosted.org/packages/d4/ad/ac807e3738d3f400058fcdb4354d86d7749bf140da94253c8f89c0fdeb7b/ladybug-0.17.0-cp313-cp313-macosx_13_0_arm64.whl", hash = "sha256:c932ac3f677cbae443686f8fa506aceefa69dff26fc7464e88204f490c96febc", size = 4178530, upload-time = "2026-05-28T22:35:27.068Z" },
+    { url = "https://files.pythonhosted.org/packages/3c/38/d625539302ce76e85213292aa64439379ac56df140445549fcbef666828e/ladybug-0.17.0-cp313-cp313-macosx_13_0_x86_64.whl", hash = "sha256:eff95469aeaad48042ab2291d3e4368ee10320cc52144c42258c2f0334dd13bc", size = 4663695, upload-time = "2026-05-28T22:35:28.599Z" },
+    { url = "https://files.pythonhosted.org/packages/bb/2e/1f882abe36463b7b01a0bd30681f19e658ce085cfb3180bbb520b9101b5e/ladybug-0.17.0-cp313-cp313-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:20514fa823b60db273ec05950e5d8667b865d9a92dce9a7f892366c036312693", size = 7058497, upload-time = "2026-05-28T22:35:29.97Z" },
+    { url = "https://files.pythonhosted.org/packages/08/86/fee9f77217a5db2d273cf6b5f243360f201dee60457b557facfbb32cde66/ladybug-0.17.0-cp313-cp313-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:7ee8d6740438d4caff5d90b676e6fca48dcc3aafac97f6facf21f51913655ffa", size = 7913423, upload-time = "2026-05-28T22:35:31.62Z" },
+    { url = "https://files.pythonhosted.org/packages/f5/0e/ddde4e0fe9ee887a5dedb514896ef98cfc7d36cc8456c913d5a220dc2b46/ladybug-0.17.0-cp313-cp313-musllinux_1_2_aarch64.whl", hash = "sha256:04c77bdd3aa08b662635165293f768d26f865efb90c06db1f6929e9ca54bb555", size = 7886130, upload-time = "2026-05-28T22:35:33.306Z" },
+    { url = "https://files.pythonhosted.org/packages/09/01/bdee64149a7f9f7880609d941a579d7d848083138c216c99ae06ec342855/ladybug-0.17.0-cp313-cp313-musllinux_1_2_x86_64.whl", hash = "sha256:fa4979350522d113d8947535279c8ae464e21f49188b9fc817c14674b111e3ee", size = 8771760, upload-time = "2026-05-28T22:35:35.076Z" },
+    { url = "https://files.pythonhosted.org/packages/20/7e/c92bcd1395e505cb22340f331c9fe2539b3d7099fa3c9a276d47f4adc5a9/ladybug-0.17.0-cp313-cp313-win_amd64.whl", hash = "sha256:2527dd74ac08203f46787c47c732a76716200d323225b548233b2565afc1dc28", size = 5283061, upload-time = "2026-05-28T22:35:36.874Z" },
+    { url = "https://files.pythonhosted.org/packages/1f/e8/c1b1a365e7eda91654935fe5951119bf91ff217107718f0dac7beb77b9cc/ladybug-0.17.0-cp314-cp314-macosx_13_0_arm64.whl", hash = "sha256:257bee3a30982681abcac3ede11308451df1c1b7e9a01ea03b29dc88ffc9f894", size = 4179850, upload-time = "2026-05-28T22:35:38.364Z" },
+    { url = "https://files.pythonhosted.org/packages/47/d9/466c01b6ec05cd3bc8695c17ef89c89dfc5f5fd0f05b5764d6e788f1be01/ladybug-0.17.0-cp314-cp314-macosx_13_0_x86_64.whl", hash = "sha256:1e3cf3273a79801b7189eff4887fb09225f716960620f9673936e6c330f3b9f0", size = 4664133, upload-time = "2026-05-28T22:35:40.141Z" },
+    { url = "https://files.pythonhosted.org/packages/6d/e8/4e7abc3cd9b38bbb48e5e3a2bd70f958e6d0cf180be64f9790140e0ae0f7/ladybug-0.17.0-cp314-cp314-manylinux_2_26_aarch64.manylinux_2_28_aarch64.whl", hash = "sha256:dcaa5ec52738b23a6b6647bc3a4310063fbd7d5868a453d1bd608a9da9a83890", size = 7060293, upload-time = "2026-05-28T22:35:41.948Z" },
+    { url = "https://files.pythonhosted.org/packages/ba/ee/19005cf9fc3a1909cb2696301b2ba5746950cae87d7dfd01d4fa1b52e4d4/ladybug-0.17.0-cp314-cp314-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl", hash = "sha256:45027585cfb1b16a6a7d5f58628618e0581a9b56e35e9570c87c3232dc5f9f45", size = 7913855, upload-time = "2026-05-28T22:35:43.55Z" },
+    { url = "https://files.pythonhosted.org/packages/c2/bc/dfa7a35320c6576015d6883d605f88786ec5b2cc63017303b1b259562347/ladybug-0.17.0-cp314-cp314-musllinux_1_2_aarch64.whl", hash = "sha256:bb50a8fa65275bb7905365c0c343760ba609abb4ba4430c828363e5be832b664", size = 7887901, upload-time = "2026-05-28T22:35:45.208Z" },
+    { url = "https://files.pythonhosted.org/packages/71/2f/e36a6d3277c92c50402945934e08c471907148dec474a7062ea799bc05ba/ladybug-0.17.0-cp314-cp314-musllinux_1_2_x86_64.whl", hash = "sha256:fae26ea3f2bf6ded9eee9357f695d04258d76f96822248f30969891c3c467966", size = 8772470, upload-time = "2026-05-28T22:35:47.068Z" },
+    { url = "https://files.pythonhosted.org/packages/6f/b7/6263c53afd1ff148dba328481e5809d4cd7d2c0a9096c7d7d51824fcf9da/ladybug-0.17.0-cp314-cp314-win_amd64.whl", hash = "sha256:b13f1e31c73e0e635b8cd35372a9e74e709ae466c1deac136f157c39610b6794", size = 5447470, upload-time = "2026-05-28T22:35:49.083Z" },
+]
+
+[[package]]
 name = "langcodes"
 version = "3.5.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1288,7 +1331,7 @@ dependencies = [
     { name = "beautifulsoup4" },
     { name = "fastembed" },
     { name = "kreuzberg" },
-    { name = "kuzu" },
+    { name = "ladybug" },
     { name = "markdown" },
     { name = "numpy", version = "2.2.6", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.11'" },
     { name = "numpy", version = "2.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.11'" },
@@ -1308,7 +1351,10 @@ dev = [
 
 [package.dev-dependencies]
 dev = [
+    { name = "kuzu" },
+    { name = "mypy" },
     { name = "pre-commit" },
+    { name = "pytest" },
     { name = "ruff" },
 ]
 
@@ -1318,7 +1364,7 @@ requires-dist = [
     { name = "beautifulsoup4" },
     { name = "fastembed", specifier = ">=0.2.0" },
     { name = "kreuzberg" },
-    { name = "kuzu", specifier = ">=0.8.0" },
+    { name = "ladybug", specifier = ">=0.17.0" },
     { name = "markdown" },
     { name = "mypy", marker = "extra == 'dev'", specifier = ">=1.0" },
     { name = "numpy", specifier = ">=1.21.0" },
@@ -1334,7 +1380,10 @@ provides-extras = ["dev"]
 
 [package.metadata.requires-dev]
 dev = [
+    { name = "kuzu", specifier = "==0.11.2" },
+    { name = "mypy", specifier = ">=1.0" },
     { name = "pre-commit", specifier = ">=4.3.0" },
+    { name = "pytest", specifier = ">=7.0" },
     { name = "ruff", specifier = ">=0.13.1" },
 ]
 

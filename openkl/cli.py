@@ -9,6 +9,7 @@ from rich.console import Console
 
 from . import init_db
 from .citations import CitationManager
+from .db import MigrationRequiredError, check_legacy_database
 from .distill import DistillationManager
 from .graph import GraphManager
 from .memory import MemoryManager
@@ -26,6 +27,16 @@ citation_manager = CitationManager()
 distill_manager = DistillationManager()
 
 
+@app.callback()
+def check_migration() -> None:
+    """Stop legacy installations before command side effects or model downloads."""
+    try:
+        check_legacy_database()
+    except MigrationRequiredError as exc:
+        console.print(str(exc), style="red", markup=False)
+        raise typer.Exit(code=1) from exc
+
+
 @app.command()
 def doctor(
     verbose: bool = typer.Option(False, "--verbose", "-v", help="Show verbose output"),
@@ -35,11 +46,11 @@ def doctor(
 
     # Check Python packages
     try:
-        import kuzu  # noqa: F401
+        import ladybug  # noqa: F401
 
-        console.print("[green]✓[/green] Kùzu DB available")
+        console.print("[green]✓[/green] LadybugDB available")
     except ImportError:
-        console.print("[red]✗[/red] Kùzu DB not found")
+        console.print("[red]✗[/red] LadybugDB not found")
 
     try:
         import fastembed  # noqa: F401
@@ -81,6 +92,7 @@ def doctor(
         console.print("[green]✓[/green] Database initialized")
     except Exception as e:
         console.print(f"[red]✗[/red] Database initialization failed: {e}")
+        raise typer.Exit(code=1) from e
 
     console.print("\n[bold green]Environment check complete![/bold green]")
 

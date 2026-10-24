@@ -3,7 +3,6 @@ Memory distillation operations for OpenKL.
 """
 
 from pathlib import Path
-from typing import Optional
 
 from rich.console import Console
 from rich.table import Table
@@ -127,8 +126,8 @@ Output format:
         self,
         distilled_content: str,
         source_citations: list[str],
-        tags: Optional[list[str]] = None,
-        topics: Optional[list[str]] = None,
+        tags: list[str] | None = None,
+        topics: list[str] | None = None,
     ) -> str:
         """Create a memory from agent-distilled content with proper relationships."""
         if not distilled_content.strip():

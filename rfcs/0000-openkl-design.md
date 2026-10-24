@@ -52,7 +52,7 @@ openkl/
 ├─ citations/                     # stable cite objects (JSONL)
 │  └─ <id>.json
 └─ .ok/                           # internal
-   ├─ kuzu/                       # embedded Graph DB
+   ├─ ladybug/                    # embedded Graph DB
    ├─ cache/
    ├─ mapping.jsonl               # docID → current path mapping
    └─ config.yml
@@ -85,7 +85,7 @@ Insight text…
 
 ## 4. Graph + Index Design
 
-**Engine**: [Kùzu DB](https://docs.kuzudb.com/) (embedded, Cypher, HNSW vectors, FT index)
+**Engine**: [LadybugDB](https://docs.ladybugdb.com/) (embedded, Cypher, HNSW vectors, FT index)
 
 **Schema (conceptual)**:
 

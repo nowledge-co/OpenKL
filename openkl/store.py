@@ -33,6 +33,7 @@ class StoreManager:
 
     def ingest(self, path: Path, normalize_only: bool = False) -> str:
         """Ingest a document into the grounding store."""
+        conn = get_connection()
         if not path.exists():
             raise FileNotFoundError(f"Path not found: {path}")
 
@@ -59,8 +60,6 @@ class StoreManager:
         normalized_path.write_text(content, encoding="utf-8")
 
         # Store in database
-        conn = get_connection()
-
         # Check if doc already exists
         result = conn.execute("MATCH (d:Doc {id: $id}) RETURN d.id", {"id": doc_id})
 
@@ -144,6 +143,7 @@ class StoreManager:
         from .citations import CitationManager
         from .vector_search import search_chunk_vectors
 
+        get_connection()
         if filters is None:
             filters = {}
 
